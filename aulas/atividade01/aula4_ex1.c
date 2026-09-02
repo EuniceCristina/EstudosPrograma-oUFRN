@@ -12,12 +12,9 @@ int main() {
 	
 	
 	if ((lado1+lado2 > lado3) && (lado2+lado3>lado1) && (lado1+lado3 > lado2)) {
-		printf("\n%d",lado1 & 3);
-		printf("\n%d",lado2 & 3);
-		printf("\n%d\n",lado3 & 3);
-		printf("%d\n",(((lado1 & 3) == 0) || ((lado2 & 3) == 0)));
+		
 
-		if (((lado1 & 3) == 0) || ((lado2 & 3) == 0) || ((lado3 & 3) == 0)){
+		if (((lado1 & 1) == 0) || ((lado2 & 1) == 0) || ((lado3 & 1) == 0)){
 			printf("Pelo menos um é par. \n ");
 		} else{
 			printf("Nenhum deles é par");

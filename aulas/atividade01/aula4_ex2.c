@@ -13,4 +13,10 @@ if ( (((ano & 4) == 0) && ((ano % 100) != 0)) || ((ano % 400) == 0) ){
 	printf("Não é bisexto");
 }
 
+if ((ano&3)==0){
+printf("\nÉ par");
+
+} else{
+	printf("\nÉ ímpar");
+}
 }

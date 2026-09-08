@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main(){
+int id_produto, qnt_vendas;
+
+float valor_total;
+
+while (id_produto!=-1){
+float venda;
+
+printf("\nId do produto: ");
+scanf("%d",&id_produto);
+if (id_produto==-1){
+	printf("\nFim do programa!")
+	break;
+	}
+printf("\nValor: ");
+scanf("%f",&valor);
+md
+if (valor<0){
+	printf("\nValor inválido! Venda ignorada.");
+	continue;
+	}
+valor_total +=venda;
+qnt_vendas+=1;
+
+}
+printf("\nValor total : %.2f R$",valor_total);
+printf("\nQuantidade de vendas: %d",qnt_produtos);
+
+return 0;
+}

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Roteiro — RPG de Vaquejada em C</title>
+<style>
+  @page { size: A4; margin: 2cm; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #111;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 20pt;
+    text-align: center;
+    border-bottom: 3px solid #333;
+    padding-bottom: 8px;
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-size: 14pt;
+    color: #1a3d6d;
+    border-bottom: 1px solid #999;
+    padding-bottom: 4px;
+    margin-top: 26px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #333;
+    margin-top: 18px;
+    page-break-after: avoid;
+  }
+  p { margin: 6px 0; text-align: justify; }
+  ul, ol { margin: 6px 0 6px 24px; }
+  li { margin: 3px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #555;
+    padding: 5px 6px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #dce6f1;
+    font-weight: bold;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 11pt;
+    margin-bottom: 24px;
+    color: #444;
+  }
+  .box {
+    background: #f4f7fb;
+    border-left: 4px solid #1a3d6d;
+    padding: 10px 14px;
+    margin: 12px 0;
+  }
+  .checklist li {
+    list-style: none;
+    margin-left: -18px;
+  }
+  .checklist li::before {
+    content: "☐ ";
+    font-size: 12pt;
+  }
+  .page-break { page-break-before: always; }
+  code {
+    background: #eee;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+    font-size: 9.5pt;
+  }
+  pre {
+    background: #f4f4f4;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 9pt;
+    overflow-x: auto;
+    page-break-inside: avoid;
+  }
+  .small { font-size: 9pt; color: #555; }
+</style>
+</head>
+<body>
+
+<h1>Roteiro do Trabalho — RPG de Vaquejada em C</h1>
+<p class="subtitle">
+  <strong>Aluna:</strong> Eunice Cristina de Araújo Silva<br>
+  <strong>Título provisório:</strong> Vaquejada RPG — O Desafio do Locutor<br>
+  <strong>Proposta:</strong> jogo de tabuleiro RPG em terminal, com combate por turnos, ambientado em uma vaquejada. O herói é um vaqueiro; o “mestre” é o Locutor; o tabuleiro é a pista; os “monstros” são os bois; e a progressão ocorre nos cenários <strong>Mirim → Aspirante → Profissional</strong>.
+</p>
+
+<h2>1. Adequação da sua ideia aos requisitos do PDF</h2>
+<table>
+  <tr><th>Sua ideia</th><th>Como entra no jogo</th><th>Requisito atendido</th></tr>
+  <tr><td>Vaqueiro Nym como herói</td><td>Será um dos 3 personagens jogáveis</td><td>Mínimo de 3 personagens</td></tr>
+  <tr><td>Locutor como mestre</td><td>Função narrativa: mensagens, anúncios e contexto</td><td>História e interface</td></tr>
+  <tr><td>Pista da vaquejada</td><td>Tabuleiro em vetor de casas</td><td>Tabuleiro e movimentação</td></tr>
+  <tr><td>Derrubada do boi</td><td>Combate por turnos contra bois</td><td>Combate</td></tr>
+  <tr><td>Mirim, Aspirante e Profissional</td><td>3 fases com dificuldade crescente</td><td>Mínimo de 3 fases</td></tr>
+  <tr><td>Boi como monstro</td><td>3 bois diferentes por fase</td><td>Mínimo de 3 monstros por fase</td></tr>
+  <tr><td>XP por derrubar boi</td><td>Recompensa, nível e bônus de atributo</td><td>Progressão</td></tr>
+  <tr><td>Disputa entre vaqueiros</td><td>Placar/pontuação de disputa</td><td>Elemento criativo</td></tr>
+  <tr><td>Atacar, defender, habilidade, fugir</td><td>Ações de combate</td><td>Mecânica de combate</td></tr>
+</table>
+<p><strong>Ajuste necessário:</strong> sua lista tem apenas um herói. O enunciado exige <strong>3 personagens jogáveis distintos</strong>. A solução é criar 3 vaqueiros com atributos, equipamentos e habilidades especiais diferentes.</p>
+
+<h2>2. História e ambientação</h2>
+<p>No sertão, acontece o maior circuito de vaquejada da região. O <strong>Locutor</strong> narra cada prova e conduz o jogador pelos cenários <strong>Mirim</strong>, <strong>Aspirante</strong> e <strong>Profissional</strong>. O objetivo final é vencer a disputa profissional e derrubar o <strong>Boi Lendário Coroné</strong>, conquistando o título de maior vaqueiro da pista.</p>
+<p>O jogo começa com a escolha do vaqueiro. Cada fase representa uma etapa do campeonato, com bois mais difíceis e uma missão principal. Ao cumprir a missão, o jogador avança de cenário. Se a vida do vaqueiro chegar a zero, ocorre <strong>GAME OVER</strong>. Ao vencer a última fase, ocorre <strong>VITÓRIA</strong>.</p>
+
+<h2>3. Personagens jogáveis — mínimo 3</h2>
+<table>
+  <tr>
+    <th>Personagem</th><th>Classe</th><th>Vida</th><th>Força</th><th>Defesa</th><th>Agilidade</th><th>Inteligência</th><th>Equipamentos</th><th>Habilidade especial</th>
+  </tr>
+  <tr>
+    <td><strong>Vaqueiro Nym</strong></td><td>Equilibrado</td><td>110</td><td>12</td><td>9</td><td>10</td><td>6</td>
+    <td>Cavalo Ventania, gibão de couro, laço de couro</td>
+    <td><strong>Laço Certeiro:</strong> ataque com bônus de dano fixo</td>
+  </tr>
+  <tr>
+    <td><strong>Vaqueira Marta</strong></td><td>Força</td><td>130</td><td>14</td><td>12</td><td>7</td><td>5</td>
+    <td>Cavalo Trovão, perneira reforçada, laço pesado</td>
+    <td><strong>Puxada de Ferro:</strong> reduz a defesa do boi por um turno</td>
+  </tr>
+  <tr>
+    <td><strong>Vaqueiro Zé Relâmpago</strong></td><td>Agilidade</td><td>95</td><td>9</td><td>8</td><td>15</td><td>8</td>
+    <td>Cavalo Seta, esporas, chapéu de couro</td>
+    <td><strong>Corrida Relâmpago:</strong> aumenta chance de fuga e de crítico</td>
+  </tr>
+</table>
+<p>Cada personagem deve ter: nome e classe representada por <code>enum</code>; vida atual e vida máxima; força, defesa, agilidade e inteligência; equipamentos com bônus de ataque/defesa; habilidade especial com efeito distinto; XP, nível e evolução.</p>
+<p>O <strong>Locutor</strong> não é um personagem controlável nem um monstro: ele será implementado como conjunto de mensagens narrativas e funções de interface.</p>
+
+<h2>4. Fases, monstros e missões</h2>
+
+<h3>Fase 1 — Mirim</h3>
+<p><strong>Missão:</strong> derrubar 2 bois e vencer o chefe da fase, o <strong>Boi Caboclo</strong>. <strong>Dificuldade:</strong> baixa.</p>
+<table>
+  <tr><th>Boi</th><th>Descrição</th><th>Vida</th><th>Ataque</th><th>Defesa</th><th>XP</th></tr>
+  <tr><td>Boi Pintado</td><td>Boi jovem e arisco</td><td>30</td><td>6</td><td>3</td><td>20</td></tr>
+  <tr><td>Boi Malhado</td><td>Boi rápido e imprevisível</td><td>35</td><td>7</td><td>4</td><td>25</td></tr>
+  <tr><td>Boi Caboclo</td><td>Chefe da fase Mirim</td><td>40</td><td>8</td><td>5</td><td>30</td></tr>
+</table>
+
+<h3>Fase 2 — Aspirante</h3>
+<p><strong>Missão:</strong> derrubar 3 bois, incluindo o chefe <strong>Boi Ferradura</strong>. <strong>Dificuldade:</strong> média.</p>
+<table>
+  <tr><th>Boi</th><th>Descrição</th><th>Vida</th><th>Ataque</th><th>Defesa</th><th>XP</th></tr>
+  <tr><td>Boi Corrente</td><td>Boi forte e resistente</td><td>60</td><td>10</td><td>7</td><td>45</td></tr>
+  <tr><td>Boi Ventania</td><td>Boi veloz, difícil de laçar</td><td>65</td><td>12</td><td>8</td><td>50</td></tr>
+  <tr><td>Boi Ferradura</td><td>Chefe da fase Aspirante</td><td>70</td><td>13</td><td>9</td><td>55</td></tr>
+</table>
+
+<h3>Fase 3 — Profissional</h3>
+<p><strong>Missão:</strong> derrubar 3 bois e vencer o <strong>Boi Lendário Coroné</strong>. <strong>Dificuldade:</strong> alta.</p>
+<table>
+  <tr><th>Boi</th><th>Descrição</th><th>Vida</th><th>Ataque</th><th>Defesa</th><th>XP</th></tr>
+  <tr><td>Boi Tempestade</td><td>Boi grande e agressivo</td><td>100</td><td>16</td><td>12</td><td>80</td></tr>
+  <tr><td>Boi Aço</td><td>Boi quase imparável</td><td>110</td><td>18</td><td>14</td><td>90</td></tr>
+  <tr><td>Boi Lendário Coroné</td><td>Chefe final do jogo</td><td>140</td><td>20</td><td>16</td><td>120</td></tr>
+</table>
+<p class="small">A dificuldade pode ser ajustada por um <strong>fator de fase</strong>: <code>vidaFinal = ceil(vidaBase × fatorFase)</code>, usando <code>math.h</code> se desejar.</p>
+
+<h2>5. Tabuleiro e eventos</h2>
+<p>O tabuleiro será um <strong>vetor de casas</strong> com 12 posições, inspirado na Figura 1 do PDF. Cada casa tem um tipo representado por <code>enum</code>.</p>
+<table>
+  <tr><th>Casa</th><th>Tipo sugerido</th><th>Efeito</th></tr>
+  <tr><td>1</td><td>Início</td><td>Ponto de partida</td></tr>
+  <tr><td>2</td><td>Vazia</td><td>Nada acontece</td></tr>
+  <tr><td>3</td><td>Combate</td><td>Sorteia um boi da fase</td></tr>
+  <tr><td>4</td><td>Tesouro</td><td>Ganha bônus de atributo ou XP</td></tr>
+  <tr><td>5</td><td>Combate</td><td>Sorteia um boi da fase</td></tr>
+  <tr><td>6</td><td>Cura</td><td>Recupera vida</td></tr>
+  <tr><td>7</td><td>Armadilha</td><td>Perde vida</td></tr>
+  <tr><td>8</td><td>Combate</td><td>Sorteia um boi da fase</td></tr>
+  <tr><td>9</td><td>Vazia</td><td>Nada acontece</td></tr>
+  <tr><td>10</td><td>Tesouro</td><td>Ganha item ou bônus</td></tr>
+  <tr><td>11</td><td>Missão</td><td>Verifica se a missão da fase foi cumprida</td></tr>
+  <tr><td>12</td><td>Chefe/Fim</td><td>Combate contra o chefe da fase</td></tr>
+</table>
+<p><strong>Movimentação:</strong> o jogador lança um <code>d6</code> e avança o número de casas. Se ultrapassar a última casa, para na última casa. Se chegar ao fim sem cumprir a missão, o Locutor anuncia e o vaqueiro retorna à casa 1 para nova volta.</p>
+<p><strong>Eventos:</strong> vazia, combate, tesouro, cura, armadilha e missão. Todos devem ser tratados por uma função <code>executarEvento</code>, recebendo ponteiro para o vaqueiro e para a fase.</p>
+
+<h2>6. Sistema de combate</h2>
+<p>O combate é a “derrubada do boi”. O vaqueiro e o boi agem por turnos.</p>
+<table>
+  <tr><th>Ação</th><th>Efeito proposto</th></tr>
+  <tr><td><strong>Atacar</strong></td><td>Tenta derrubar o boi; rola <code>d20 + força + bônus da arma</code></td></tr>
+  <tr><td><strong>Defender</strong></td><td>Firmar-se na sela/reduzir o dano do próximo ataque do boi; narrativamente, “puxar a vez”</td></tr>
+  <tr><td><strong>Habilidade especial</strong></td><td>Usa o efeito próprio do vaqueiro; limitada por combate</td></tr>
+  <tr><td><strong>Fugir</strong></td><td>Teste de agilidade; se成功, sai sem recompensa; se falhar, o boi ataca</td></tr>
+</table>
+<p><strong>Fórmulas sugeridas:</strong></p>
+<ul>
+  <li>Ataque do vaqueiro: <code>d20 + força + bônus da arma</code></li>
+  <li>Dano ao boi: <code>max(1, ataque - defesa do boi)</code></li>
+  <li>Ataque do boi: <code>d20 + ataque do boi</code></li>
+  <li>Dano ao vaqueiro: <code>max(1, ataque do boi - defesa do vaqueiro)</code></li>
+  <li>Defesa: reduz o próximo dano recebido ou aumenta temporariamente a defesa.</li>
+  <li>Recompensa: XP + bônus aleatório em força, defesa, agilidade, inteligência ou vida máxima.</li>
+</ul>
+<p><strong>Progressão:</strong> ao ganhar XP, verificar subida de nível. Ao subir de nível, aumentar vida máxima e um atributo. O XP e os bônus devem ser aplicados por funções que recebem <strong>ponteiros</strong> para as structs.</p>
+<p><strong>Disputa entre vaqueiros:</strong> pode ser um placar de pontos. Cada boi derrubado vale pontos; ao chegar à casa de missão, o Locutor compara a pontuação com uma meta. Isso é criativo, mas não substitui a missão principal.</p>
+<p><strong>Condições de fim:</strong> vida do vaqueiro = 0 → GAME OVER; missão da última fase cumprida → VITÓRIA.</p>
+
+<h2>7. Modelagem planejada</h2>
+<h3>Enumerações sugeridas</h3>
+<ul>
+  <li><code>ClasseVaqueiro</code>: equilibrado, força, agilidade.</li>
+  <li><code>TipoCasa</code>: início, vazia, combate, tesouro, cura, armadilha, missão, chefe.</li>
+  <li><code>AcaoCombate</code>: atacar, defender, habilidade, fugir.</li>
+  <li><code>EstadoJogo</code>: jogando, game over, vitória.</li>
+</ul>
+<h3>Structs sugeridas</h3>
+<ul>
+  <li><code>Vaqueiro</code>: nome, classe, vida, vidaMax, força, defesa, agilidade, inteligência, XP, nível, equipamentos, bônus, controle da habilidade.</li>
+  <li><code>Boi</code>: nome, descrição, vida, ataque, defesa, nível, XP de recompensa.</li>
+  <li><code>Casa</code>: tipo, descrição.</li>
+  <li><code>Fase</code>: número, nome, história, missão, vetor de bois, tabuleiro, bois derrubados, missão cumprida.</li>
+  <li>Opcional: <code>Equipamento</code> com nome e bônus.</li>
+</ul>
+<h3>Uso de ponteiros</h3>
+<p>As funções devem alterar as structs diretamente, por exemplo: receber dano no vaqueiro; curar vaqueiro; aplicar dano no boi; ganhar XP; aplicar bônus aleatório; verificar nível; verificar missão.</p>
+
+<h2>8. Modularização sugerida</h2>
+<p>O programa deve ser dividido em funções coesas. Sugestão de módulos:</p>
+<ul>
+  <li><strong>Interface e narrativa:</strong> exibir menu principal; exibir escolha de personagem; mostrar vaqueiro; mostrar boi; mostrar tabuleiro; mensagens do Locutor; pausar.</li>
+  <li><strong>Criação e inicialização:</strong> criar vaqueiros; criar bois da fase; inicializar fases; inicializar tabuleiro.</li>
+  <li><strong>Aleatoriedade:</strong> rolar dado; testar chance; sortear boi; sortear bônus.</li>
+  <li><strong>Movimento e eventos:</strong> mover jogador; executar evento da casa; tratar tesouro, cura e armadilha.</li>
+  <li><strong>Combate:</strong> iniciar combate; turno do vaqueiro; turno do boi; calcular ataque; calcular dano; aplicar dano; tentar fuga; usar habilidade especial.</li>
+  <li><strong>Progressão:</strong> ganhar XP; verificar nível; aplicar bônus aleatório; verificar missão; avançar fase.</li>
+</ul>
+<p>A função <code>main</code> deve apenas coordenar o fluxo: menu → escolha → fase → tabuleiro → evento → combate → recompensa → verificação → próxima fase.</p>
+
+<h2>9. Entregáveis e organização</h2>
+<h3>README.md deve conter</h3>
+<ul>
+  <li>nome e matrícula da aluna;</li>
+  <li>história do jogo;</li>
+  <li>personagens, atributos, equipamentos e habilidades;</li>
+  <li>monstros e fases;</li>
+  <li>regras de movimentação, casas, combate e fórmulas;</li>
+  <li>tutorial de compilação e execução;</li>
+  <li>explicação dos principais <code>struct</code>, <code>enum</code> e funções;</li>
+  <li>imagens, se houver;</li>
+  <li>link do vídeo de demonstração.</li>
+</ul>
+<h3>Estrutura sugerida do repositório</h3>
+<pre>README.md
+src/
+  main.c
+Makefile          (opcional)
+images/
+  personagens/
+  monstros/
+video/
+  link_video.md</pre>
+<h3>Vídeo de gameplay — até 10 minutos</h3>
+<ol>
+  <li>Apresentação da aluna e do jogo.</li>
+  <li>Compilação no terminal.</li>
+  <li>Demonstração: escolha de personagem, movimentação, combate, recompensa e fases.</li>
+  <li>Breve explicação de <code>struct</code>, <code>enum</code> e ponteiros.</li>
+</ol>
+
+<h2>10. Etapas de desenvolvimento</h2>
+<ol>
+  <li><strong>Planejamento:</strong> fechar história, personagens, bois, fases e tabuleiro.</li>
+  <li><strong>Estruturas básicas:</strong> declarar <code>struct</code> e <code>enum</code>; criar menus e exibição.</li>
+  <li><strong>Dados iniciais:</strong> criar os 3 vaqueiros, os 9 bois e as 3 fases.</li>
+  <li><strong>Tabuleiro:</strong> vetor de casas, <code>d6</code>, movimentação e limites.</li>
+  <li><strong>Eventos:</strong> combate, tesouro, cura, armadilha e missão.</li>
+  <li><strong>Combate:</strong> ações, turnos, dano, fuga e habilidade especial.</li>
+  <li><strong>Progressão:</strong> XP, nível, bônus aleatório e ponteiros.</li>
+  <li><strong>Fases e missões:</strong> verificação de missão, chefe e avanço de fase.</li>
+  <li><strong>Robustez:</strong> tratar entradas inválidas, letras no lugar de números e opções fora do menu.</li>
+  <li><strong>Entrega:</strong> README, repositório público e vídeo.</li>
+</ol>
+
+<h2>11. Checklist final de requisitos</h2>
+<ul class="checklist">
+  <li>3 personagens jogáveis distintos.</li>
+  <li>Cada personagem com atributos, equipamentos e habilidade especial.</li>
+  <li>3 fases com dificuldade crescente.</li>
+  <li>3 bois diferentes por fase.</li>
+  <li>Missão principal por fase.</li>
+  <li>Tabuleiro com tipos de casa via <code>enum</code>.</li>
+  <li>Combate por turnos com atacar, defender, habilidade e fugir.</li>
+  <li>Uso de <code>struct</code> para personagens, monstros, casas e fases.</li>
+  <li>Uso de ponteiros para atualizar vida, XP e atributos.</li>
+  <li>Código modularizado, comentado e sem travar com entradas inválidas.</li>
+  <li>README completo.</li>
+  <li>Repositório público.</li>
+  <li>Vídeo de até 10 minutos.</li>
+</ul>
+
+<p style="margin-top:30px; text-align:center; font-size:9pt; color:#777;">
+  Documento gerado para conversão em PDF — Roteiro do Trabalho de Programação em C
+</p>
+
+</body>
+</html>

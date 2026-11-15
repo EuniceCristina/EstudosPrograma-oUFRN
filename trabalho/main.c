@@ -28,6 +28,13 @@ typedef struct Personagem {
     } Boi;
 
 
+void iniciarFase(struct Personagem *vaqueiro,int *posicao,int *pegadaBoi,int *vitoriaChefe){
+
+    vaqueiro->habilidadeEspecial = 1;    /* data */
+    *posicao=0;
+    *pegadaBoi=0;
+    *vitoriaChefe=0;
+};
 
 void tesouro(struct Personagem *vaqueiro){
     printf("\n\nVocê encontrou um tesouro! ");
@@ -148,14 +155,33 @@ void resistenciaBoi(struct Personagem *vaqueiro, struct Boi *boi) {
      printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d\n", vaqueiro->nome, vaqueiro->vida, vaqueiro->ataque, vaqueiro->defesa);
 }   
 
-void missao(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
+void missao(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi,int fase,int *vitoriaChefe){
+    int fuga=0;
     printf("\n\nVocê chegou na casa da missão. Prepare-se para lutar contra o chefe da fase, o Boi Caboclo!");
-    strcpy(boi->nome,"Boi Caboclo");
-    boi->resistencia = 40;
-    boi->reacao = 8;
-    boi->dificuldade = 5;
-    boi->xp = 30;
-    int fuga =0;
+    if (fase==1){
+        strcpy(boi->nome,"Boi Caboclo");
+        boi->resistencia = 40;
+        boi->reacao = 8;
+        boi->dificuldade = 5;
+        boi->xp = 30;
+        
+    } else if(fase==2){
+        strcpy(boi->nome,"Boi Ferradura");
+        boi->resistencia = 70;
+        boi->reacao = 13;
+        boi->dificuldade = 9;
+        boi->xp = 55;
+       
+    } else if (fase==3){
+        strcpy(boi->nome,"Boi Lendario Corone");
+        boi->resistencia = 140;
+        boi->reacao = 20;
+        boi->dificuldade = 16;
+        boi->xp = 120;
+        
+    };
+    
+    printf("\n\nVocê chegou na casa da missão. Prepare-se para lutar contra o chefe da fase, o %s!",boi->nome);
     while (boi->resistencia > 0 && vaqueiro->vida > 0 && fuga ==0){
                 
     printf("\n\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
@@ -185,12 +211,14 @@ void missao(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
             resistenciaBoi(vaqueiro, boi);
         }
         vaqueiro->defesa = defesaOriginal;
+        
 
         };
         if (boi->resistencia==0){
             printf("\n\nValeu o boi.\nVocê derrobou o %s!", boi->nome);
-            *pegadaBoi+=1;
+            
             vaqueiro->xp += boi->xp;
+            *vitoriaChefe=1;
             recebeBonus(vaqueiro);
         } else if (vaqueiro->vida==0){
             printf("\nZero.\nVocê não conseguiu concluir a derrubada. Fim de jogo.", boi->nome);
@@ -200,35 +228,69 @@ void missao(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
             return;
         }
 
+
 };
-void combate(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
+void combate(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi,int fase){
         printf("\n\nVocê parou numa casa de combate. Prepare-se para lutar contra um boi!");
-        int numBoi = (rand() % 2 + 1);
+        
         int fuga = 0;
-        switch (numBoi) {
-            case 1:
-                strcpy(boi->nome,"Boi Pintado");
-                boi->resistencia = 30;
-                boi->reacao = 6;
-                boi->dificuldade = 3;
-                boi->xp = 20;
-                break;
-            case 2:
-                strcpy(boi->nome,"Boi Malhado");
-                boi->resistencia = 35;
-                boi->reacao = 7;
-                boi->dificuldade = 4;
-                boi->xp = 25;
-                break;
-            
+        int numBoi = rand() % 2 + 1;
+        if (fase == 1) {
+        if (numBoi == 1) {
+            strcpy(boi->nome, "Boi Pintado");
+            boi->resistencia = 30;
+            boi->reacao = 6;
+            boi->dificuldade = 3;
+            boi->xp = 20;
+        } else {
+            strcpy(boi->nome, "Boi Malhado");
+            boi->resistencia = 35;
+            boi->reacao = 7;
+            boi->dificuldade = 4;
+            boi->xp = 25;
         }
+        } else if (fase == 2) {
+        if (numBoi == 1) {
+            strcpy(boi->nome, "Boi Corrente");
+            boi->resistencia = 60;
+            boi->reacao = 10;
+            boi->dificuldade = 7;
+            boi->xp = 45;
+        } else {
+            strcpy(boi->nome, "Boi Ventania");
+            boi->resistencia = 65;
+            boi->reacao = 12;
+            boi->dificuldade = 8;
+            boi->xp = 50;
+            }
+        } else if (fase==3){
+           if (numBoi == 1) {
+            strcpy(boi->nome, "Boi Tempestade");
+            boi->resistencia = 100;
+            boi->reacao = 16;
+            boi->dificuldade = 12;
+            boi->xp = 80;
+        } else {
+            strcpy(boi->nome, "Boi Aço");
+            boi->resistencia = 110;
+            boi->reacao = 18;
+            boi->dificuldade = 14;
+            boi->xp = 90;
+            } 
+        }
+
+        
         printf("\nVocê encontrou o %s! Prepare-se para a derrubada", boi->nome, *pegadaBoi);
         while (boi->resistencia > 0 && vaqueiro->vida > 0 && fuga ==0){
-                
             printf("\n\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
             printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d", vaqueiro->nome, vaqueiro->vida, vaqueiro->ataque, vaqueiro->defesa);
             int acao;
             int defesaOriginal = vaqueiro->defesa;
+            
+
+            
+
+            vaqueiro->habilidadeEspecial = 1;
             printf("\nDefina sua ação: 1- Derrubar boi, 2- Segurar o boi, 3- Usar habilidade especial, 4- Pular vez\n:");
             scanf("%d", &acao);
             switch (acao) {
@@ -253,8 +315,13 @@ void combate(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
                 resistenciaBoi(vaqueiro, boi);
             }
             vaqueiro->defesa = defesaOriginal;
+            
+            
 
         };
+        printf("\n\n<Tecle ENTER para continuar>");
+        while( getchar() != '\n' ); 
+        system("cls");
         if (boi->resistencia==0){
             printf("\n\nValeu o boi.\nVocê derrobou o %s!", boi->nome);
             *pegadaBoi+=1;
@@ -268,9 +335,16 @@ void combate(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
             return;
         }
 }
-
-void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi, int *pegadaBoi){ 
-    while (*pegadaBoi <3){
+void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi, int *pegadaBoi,int fase,int *vitoriaChefe){ 
+    int meta=0;
+    if (fase==1){
+        meta=2;
+    }else if (fase==2){
+        meta=3;
+    }else if(fase==3){
+        meta=4;
+    }
+    while (*pegadaBoi <meta || *vitoriaChefe==0){
         int d6 = (rand() % 11 + 1);
         printf("\n\nVocê tirou %d no dado.", d6);
         *posicao +=d6;
@@ -282,7 +356,7 @@ void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi
                 printf("\n\nVocê parou numa casa vazia. Nada acontece. \nSe prepare-se para a próxima rodada.");
                 break;
             case 2:
-                combate(vaqueiro, boi, pegadaBoi);
+                combate(vaqueiro, boi, pegadaBoi,fase);
 
                 break;
 
@@ -290,7 +364,7 @@ void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi
                 tesouro(vaqueiro);
                 break;
             case 4:
-                combate(vaqueiro, boi, pegadaBoi);
+                combate(vaqueiro, boi, pegadaBoi,fase);
                 break;
             case 5:
                 printf("\n\nVocê parou numa casa de cura. Você recuperou 20 pontos de vida.");
@@ -301,7 +375,7 @@ void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi
                 vaqueiro->vida -= 20;
                 break;
             case 7:
-                combate(vaqueiro, boi, pegadaBoi);
+                combate(vaqueiro, boi, pegadaBoi,fase);
                 break;
             case 8:
                 printf("\n\nVocê parou numa casa vazia. Nada acontece. \nSe prepare-se para a próxima rodada.");
@@ -310,30 +384,37 @@ void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi
                 tesouro(vaqueiro);
                 break;
             case 11:
-                missao(vaqueiro, boi, pegadaBoi);
+                missao(vaqueiro, boi, pegadaBoi, fase,vitoriaChefe);
                 break;
         
             
 
         };
-        printf("\n\nTecle ENTER para lançar o dado novamente.");
-        scanf("%s", casas[12]);
+        printf("\n\n<Tecle ENTER para continuar>");
+        while( getchar() != '\n' ); 
+        system("cls");
+   
 
     };
+    
     printf("\n\nParabéns, você concluiu a missão e derrubou 2 bois! Você venceu a fase!");
+    printf("\n\n<Tecle ENTER para continuar>");
+        while( getchar() != '\n' ); 
+        system("cls");
     
 
 };
+
 
 int main(){
 
     char casas[12][20] = {"Início","Vazia","Combate","Tesouro","Combate","Cura","Armadilha","Combate","Vazia","Tesouro","Missão","Chefe / Fim"};
     int posicao =0;
     int pegadaBoi =0;
-
+    int vitoriaChefe=0;
     struct Personagem vaqueiro;
     struct Boi boi;
-
+    int fase =1;
     printf("\n\n1- Vaqueiro Nym\n" 
         "Classe: Equilibrado\n" 
         "Vida: 110\n" 
@@ -374,7 +455,7 @@ int main(){
 
     switch (numPersonagem) {
         case 1: 
-            strcpy(vaqueiro.nome,"Vaqueiro Nym");
+            strcpy(vaqueiro.nome,"Vaqueiro.ym");
             strcpy(vaqueiro.classe,"Equilibrado");
             vaqueiro.vida = 110;
             vaqueiro.ataque = 12;
@@ -403,7 +484,7 @@ int main(){
             break;
 
         case 3:
-            strcpy(vaqueiro.nome,"Vaqueiro Zé Relâmpago");
+            strcpy(vaqueiro.nome,"Vaqueiro.é Relâmpago");
             strcpy(vaqueiro.classe,"Agilidade");
             vaqueiro.vida = 95;
             vaqueiro.ataque = 9;
@@ -417,24 +498,50 @@ int main(){
             strcpy(vaqueiro.especial,"Corrida Relâmpago");
             break;
     };
-    vaqueiro.habilidadeEspecial = 1;
 
-    printf("\n\nFase 1");
+    printf("\n\nFase 1 - Mirim");
     printf("\nMissão: derrubar 2 bois e vencer o chefe da fase, o Boi Caboclo. Dificuldade: baixa.");
 
     printf("\nBoi          Descricao                  Vida  Ataque  Defesa  XP");
     printf("\nBoi Pintado  Boi jovem e arisco         30    6       3       20");
     printf("\nBoi Malhado  Boi rapido e imprevisivel  35    7       4       25");
     printf("\nBoi Caboclo  Chefe da fase Mirim        40    8       5       30");
+    iniciarFase(&vaqueiro,&posicao,&pegadaBoi,&vitoriaChefe);
+    printf("\n\n%s, você está na casa %s.", vaqueiro.nome, casas[posicao]);
+    printf("\n\nLançando dados para avançar de casa...");
+    avancaCasa(&posicao, casas, &vaqueiro, &boi, &pegadaBoi,fase,&vitoriaChefe);
+    fase+=1;
+    
+    printf("\n\nFase 2 - Arpirante");
+    printf("\nMissão: derrubar 3 bois, incluindo o chefe Boi Ferradura. Dificuldade: média.");
+
+    printf("\nBoi            Descricao                   Vida  Ataque  Defesa   XP");
+    printf("\nBoi Corrente   Boi jovem e arisco          60    10       7       45");
+    printf("\nBoi Ventania   Boi rapido e imprevisivel   65    12       8       50");
+    printf("\nBoi Ferradura  Chefe da fase Aspirante     70    13       9       55");
 
     printf("\n\n%s, você está na casa %s.", vaqueiro.nome, casas[posicao]);
    
+   
+   iniciarFase(&vaqueiro,&posicao,&pegadaBoi,&vitoriaChefe);
    printf("\n\nLançando dados para avançar de casa...");
+   avancaCasa(&posicao, casas, &vaqueiro, &boi, &pegadaBoi,fase,&vitoriaChefe);
 
-   avancaCasa(&posicao, casas, &vaqueiro, &boi, &pegadaBoi);
-
+   fase+=1;
+   printf("\n\nFase 3 - Profissional");
+   printf("\nMissão: derrubar 3 bois e vencer o Boi Lendário Coroné. Dificuldade: alta.");
+   
+    printf("\nBoi                    Descricao                  Vida  Ataque  Defesa  XP");
+    printf("\nBoi Tempestade         Boi jovem e arisco         30    6       3       20");
+    printf("\nBoi Aço                Boi rapido e imprevisivel  35    7       4       25");
+    printf("\nBoi Lendário Coroné    Chefe da fase Mirim        40    8       5       30");
+   
+   printf("\n\n%s, você está na casa %s.", vaqueiro.nome, casas[posicao]);
    
    
+   iniciarFase(&vaqueiro,&posicao,&pegadaBoi,&vitoriaChefe);
+   printf("\n\nLançando dados para avançar de casa...");
+   avancaCasa(&posicao, casas, &vaqueiro, &boi, &pegadaBoi,fase,&vitoriaChefe);
     return 0;
 
 

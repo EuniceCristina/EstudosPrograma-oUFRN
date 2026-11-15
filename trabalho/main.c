@@ -30,29 +30,29 @@ typedef struct Personagem {
 
 
 void tesouro(struct Personagem *vaqueiro){
-    printf("\nVocê encontrou um tesouro! ");
+    printf("\n\nVocê encontrou um tesouro! ");
     
     int sorteio = rand() % 4 + 1;
 
     switch (sorteio) {
         case 1:
             vaqueiro->forca += 2;
-            printf("\nVocê ganhou +2 de força!");
+            printf("\n\nVocê ganhou +2 de força!");
             break;
 
         case 2:
             vaqueiro->defesa += 2;
-            printf("\nVocê ganhou +2 de defesa!");
+            printf("\n\nVocê ganhou +2 de defesa!");
             break;
 
         case 3:
             vaqueiro->agilidade += 2;
-            printf("\nVocê ganhou +2 de agilidade!");
+            printf("\n\nVocê ganhou +2 de agilidade!");
             break;
 
         case 4:
             vaqueiro->inteligencia += 2;
-            printf("\nVocê ganhou +2 de inteligência!");
+            printf("\n\nVocê ganhou +2 de inteligência!");
             break;
     }
 }
@@ -78,14 +78,14 @@ void puxadaVaqueiro(struct Personagem *vaqueiro, struct Boi *boi){
     if (dano<=0){
         dano=1;
     };
-    printf("\nVocê reduziu a resistência do boi %s em %d.", boi->nome, dano);
+    printf("\n\nVocê reduziu a resistência do boi %s em %d.", boi->nome, dano);
     boi->resistencia -= dano;
     if (boi->resistencia <= 0) {
         boi->resistencia = 0;
         
 
     }
-    printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
+    printf("\n\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
 
 }
 void habilidadeEspecial(struct Personagem *vaqueiro, struct Boi *boi){
@@ -93,7 +93,7 @@ void habilidadeEspecial(struct Personagem *vaqueiro, struct Boi *boi){
          return;
      }
     if (vaqueiro->habilidadeEspecial == 0) {
-        printf("\nVocê já usou sua habilidade especial nesta batalha. Escolha outra ação.");
+        printf("\n\nVocê já usou sua habilidade especial nesta batalha. Escolha outra ação.");
         return;
     }
     if (strcmp(vaqueiro->especial, "Laço Certeiro") == 0) {
@@ -148,8 +148,8 @@ void resistenciaBoi(struct Personagem *vaqueiro, struct Boi *boi) {
      printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d\n", vaqueiro->nome, vaqueiro->vida, vaqueiro->ataque, vaqueiro->defesa);
 }   
 
-void missao(struct Personagem *vaqueiro, struct Boi *boi){
-    printf("\nVocê chegou na casa da missão. Prepare-se para lutar contra o chefe da fase, o Boi Caboclo!");
+void missao(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
+    printf("\n\nVocê chegou na casa da missão. Prepare-se para lutar contra o chefe da fase, o Boi Caboclo!");
     strcpy(boi->nome,"Boi Caboclo");
     boi->resistencia = 40;
     boi->reacao = 8;
@@ -158,19 +158,18 @@ void missao(struct Personagem *vaqueiro, struct Boi *boi){
     int fuga =0;
     while (boi->resistencia > 0 && vaqueiro->vida > 0 && fuga ==0){
                 
-    printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
+    printf("\n\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
     printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d", vaqueiro->nome, vaqueiro->vida, vaqueiro->ataque, vaqueiro->defesa);
     int acao;
-    int fuga=0;
     int defesaOriginal = vaqueiro->defesa;
-    printf("\nDefina sua ação: 1- Derrubar boi, 2- Segurar o boi, 3- Usar habilidade especial, 4- Pular vez\n:");
+    printf("\n\nDefina sua ação: 1- Derrubar boi, 2- Segurar o boi, 3- Usar habilidade especial, 4- Pular vez\n:");
     scanf("%d", &acao);
     switch (acao) {
         case 1: 
             puxadaVaqueiro(vaqueiro, boi);
             break;
         case 2:
-            printf("\nVVocê segurou o boi e estabilizou sua posição.");
+            printf("\n\nVVocê segurou o boi e estabilizou sua posição.");
             vaqueiro->defesa += 2;
             break;
         case 3:
@@ -189,20 +188,21 @@ void missao(struct Personagem *vaqueiro, struct Boi *boi){
 
         };
         if (boi->resistencia==0){
-            printf("\nValeu o boi.\nVocê derrobou o %s!", boi->nome);
+            printf("\n\nValeu o boi.\nVocê derrobou o %s!", boi->nome);
+            *pegadaBoi+=1;
             vaqueiro->xp += boi->xp;
             recebeBonus(vaqueiro);
         } else if (vaqueiro->vida==0){
             printf("\nZero.\nVocê não conseguiu concluir a derrubada. Fim de jogo.", boi->nome);
             exit(0);
         } else if (fuga==1){
-            printf("\nVocê desistiu da missão. Sem recomoensa.");
+            printf("\n\nVocê desistiu da missão. Sem recomoensa.");
             return;
         }
 
-}
-void combate(struct Personagem *vaqueiro, struct Boi *boi){
-        printf("\nVocê parou numa casa de combate. Prepare-se para lutar contra um boi!");
+};
+void combate(struct Personagem *vaqueiro, struct Boi *boi, int *pegadaBoi){
+        printf("\n\nVocê parou numa casa de combate. Prepare-se para lutar contra um boi!");
         int numBoi = (rand() % 2 + 1);
         int fuga = 0;
         switch (numBoi) {
@@ -222,10 +222,10 @@ void combate(struct Personagem *vaqueiro, struct Boi *boi){
                 break;
             
         }
-        printf("\nVocê encontrou o %s! Prepare-se para a derrubada", boi->nome);
+        printf("\nVocê encontrou o %s! Prepare-se para a derrubada", boi->nome, *pegadaBoi);
         while (boi->resistencia > 0 && vaqueiro->vida > 0 && fuga ==0){
                 
-            printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
+            printf("\n\n%s - Vida: %d, Ataque: %d, Defesa: %d", boi->nome, boi->resistencia, boi->reacao, boi->dificuldade);
             printf("\n%s - Vida: %d, Ataque: %d, Defesa: %d", vaqueiro->nome, vaqueiro->vida, vaqueiro->ataque, vaqueiro->defesa);
             int acao;
             int defesaOriginal = vaqueiro->defesa;
@@ -256,62 +256,71 @@ void combate(struct Personagem *vaqueiro, struct Boi *boi){
 
         };
         if (boi->resistencia==0){
-            printf("\nValeu o boi.\nVocê derrobou o %s!", boi->nome);
+            printf("\n\nValeu o boi.\nVocê derrobou o %s!", boi->nome);
+            *pegadaBoi+=1;
             vaqueiro->xp += boi->xp;
             recebeBonus(vaqueiro);
         } else if (vaqueiro->vida==0){
             printf("\nZero.\nVocê não conseguiu concluir a derrubada. Fim de jogo.", boi->nome);
             exit(0);
         } else if (fuga == 1){
-            printf("\nVocê desistiu da tentativa de derrubada. Prepare-se para a próxima rodada.");
+            printf("\n\nVocê desistiu da tentativa de derrubada. Prepare-se para a próxima rodada.");
             return;
         }
 }
 
-void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi) {
-    int d6 = (rand() % 11 + 1);
-    printf("\nVocê tirou %d no dado.", d6);
-    *posicao +=d6;
-    
-    switch (*posicao) {
-        case 1:
-            printf("\nVocê parou numa casa vazia. Nada acontece. \nSe prepare-se para a próxima rodada.");
-            break;
-        case 2:
-            combate(vaqueiro, boi);
+void avancaCasa(int *posicao, char casas[12][20], Personagem *vaqueiro, Boi *boi, int *pegadaBoi){ 
+    while (*pegadaBoi <3){
+        int d6 = (rand() % 11 + 1);
+        printf("\n\nVocê tirou %d no dado.", d6);
+        *posicao +=d6;
+        if (*posicao > 11) {
+            *posicao = *posicao % 12;
+        }
+        switch (*posicao) {
+            case 1:
+                printf("\n\nVocê parou numa casa vazia. Nada acontece. \nSe prepare-se para a próxima rodada.");
+                break;
+            case 2:
+                combate(vaqueiro, boi, pegadaBoi);
 
-            break;
+                break;
 
-        case 3:
-            tesouro(vaqueiro);
-            break;
-        case 4:
-            combate(vaqueiro, boi);
-            break;
-        case 5:
-            printf("\nVocê parou numa casa de cura. Você recuperou 20 pontos de vida.");
-            vaqueiro->vida += 50;
-            break;
-        case 6:
-            printf("\nVocê parou numa casa de armadilha. Você perdeu 20 pontos de vida.");
-            vaqueiro->vida -= 20;
-            break;
-        case 7:
-            combate(vaqueiro, boi);
-            break;
-        case 8:
-            printf("\nVocê parou numa casa vazia. Nada acontece. \nSe prepare-se para a próxima rodada.");
-            break;
-        case 9:
-            tesouro(vaqueiro);
-            break;
-        case 11:
-            missao(vaqueiro, boi);
-            break;
+            case 3:
+                tesouro(vaqueiro);
+                break;
+            case 4:
+                combate(vaqueiro, boi, pegadaBoi);
+                break;
+            case 5:
+                printf("\n\nVocê parou numa casa de cura. Você recuperou 20 pontos de vida.");
+                vaqueiro->vida += 50;
+                break;
+            case 6:
+                printf("\n\nVocê parou numa casa de armadilha. Você perdeu 20 pontos de vida.");
+                vaqueiro->vida -= 20;
+                break;
+            case 7:
+                combate(vaqueiro, boi, pegadaBoi);
+                break;
+            case 8:
+                printf("\n\nVocê parou numa casa vazia. Nada acontece. \nSe prepare-se para a próxima rodada.");
+                break;
+            case 9:
+                tesouro(vaqueiro);
+                break;
+            case 11:
+                missao(vaqueiro, boi, pegadaBoi);
+                break;
         
+            
+
+        };
+        printf("\n\nTecle ENTER para lançar o dado novamente.");
+        scanf("%s", casas[12]);
 
     };
-
+    printf("\n\nParabéns, você concluiu a missão e derrubou 2 bois! Você venceu a fase!");
     
 
 };
@@ -320,12 +329,12 @@ int main(){
 
     char casas[12][20] = {"Início","Vazia","Combate","Tesouro","Combate","Cura","Armadilha","Combate","Vazia","Tesouro","Missão","Chefe / Fim"};
     int posicao =0;
-    
+    int pegadaBoi =0;
 
     struct Personagem vaqueiro;
     struct Boi boi;
 
-    printf("1- Vaqueiro Nym\n" 
+    printf("\n\n1- Vaqueiro Nym\n" 
         "Classe: Equilibrado\n" 
         "Vida: 110\n" 
         "Força: 12\n" 
@@ -336,7 +345,7 @@ int main(){
         "Equipamentos: Cavalo Ventania,gibão de couro\n"
         "Habilidade especial:Laço Certeiro(ataque com bônus de dano fixo) ");
 
-    printf("2- Vaqueira Marta\n" 
+    printf("\n\n2- Vaqueira Marta\n" 
         "Classe: Força\n" 
         "Vida: 130\n" 
         "Força: 14\n" 
@@ -347,7 +356,7 @@ int main(){
         "Equipamentos: Cavalo Trovão, perneira reforçada, laço pesado\n"
         "Habilidade especial: Puxada de Ferro(reduz a defesa do boi por um turno)\n");
 
-     printf("3- Vaqueiro Zé Relâmpago\n" 
+     printf("\n\n3- Vaqueiro Zé Relâmpago\n" 
         "Classe: Agilidade\n" 
         "Vida: 95\n" 
         "Força: 9\n" 
@@ -359,7 +368,7 @@ int main(){
         "Habilidade especial:Corrida Relâmpago(aumenta chance de fuga) ");
 
 
-    printf("\nEscolha seu personagem: ");
+    printf("\n\nEscolha seu personagem: ");
     int numPersonagem;
     scanf("%d", &numPersonagem);
 
@@ -410,19 +419,19 @@ int main(){
     };
     vaqueiro.habilidadeEspecial = 1;
 
-    printf("\nFase 1");
+    printf("\n\nFase 1");
     printf("\nMissão: derrubar 2 bois e vencer o chefe da fase, o Boi Caboclo. Dificuldade: baixa.");
 
-    printf("\nBoi          Descrição                  Vida  Ataque  Defesa  XP");
+    printf("\nBoi          Descricao                  Vida  Ataque  Defesa  XP");
     printf("\nBoi Pintado  Boi jovem e arisco         30    6       3       20");
-    printf("\nBoi Malhado  Boi rápido e imprevisível  35    7       4       25");
+    printf("\nBoi Malhado  Boi rapido e imprevisivel  35    7       4       25");
     printf("\nBoi Caboclo  Chefe da fase Mirim        40    8       5       30");
 
-    printf("\n%s, você está na casa %s.", vaqueiro.nome, casas[posicao]);
+    printf("\n\n%s, você está na casa %s.", vaqueiro.nome, casas[posicao]);
    
    printf("\n\nLançando dados para avançar de casa...");
 
-   avancaCasa(&posicao, casas, &vaqueiro, &boi);
+   avancaCasa(&posicao, casas, &vaqueiro, &boi, &pegadaBoi);
 
    
    
